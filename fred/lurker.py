@@ -20,12 +20,13 @@ class ArchiveLurker(fedmsg.consumers.FedmsgConsumer):
         # We do not need to validate the changes, as it is an automatic message 
         # from the archive
         session = Session()
-        logging.info("Received a fedmsg about changes, package : %s/%s", message["Source"], message["Version"])
+        m = message['body']['msg']
+        logging.info("Received a fedmsg about changes, package : %s/%s", m["Source"], m["Version"])
         c = Changes(
-                nameversion = "%s/%s" % (message["Source"], message["Version"]),
-                name = message["Source"],
-                version = message["Version"],
-                suite = message["Distribution"],
+                nameversion = "%s/%s" % (m["Source"], m["Version"]),
+                name = m["Source"],
+                version = m["Version"],
+                suite = m["Distribution"],
                 created_at = dt.datetime.utcnow())
         session.add(c)
         session.commit()
