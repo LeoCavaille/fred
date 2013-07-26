@@ -18,4 +18,13 @@ setup(
     license="Expat",
     url="http://deb.io/",
     platforms=['any'],
+    entry_points={
+        'moksha.consumer': (
+            'fred = fred.lurker:ArchiveLurker',
+        ),
+        'console_scripts': [
+            'fredd = fred.daemon:main',
+            'fred-init = fred.dbutils:main',
+        ],
+    },
 )
