@@ -4,7 +4,7 @@
 echo "deb http://perso.crans.org/dandrimont/fedmsg-wheezy/ ./" > /etc/apt/sources.list.d/fedmsg.list
 gpg --keyserver keyring.debian.org --recv-key B8E5087766475AAF
 gpg --export --armor B8E5087766475AAF| apt-key add  -
-apt-get install python-fedmsg devscripts
+apt-get install python-fedmsg devscripts dput
 
 edit /etc/fedmsg.d/endpoints.py
     "debian": [
