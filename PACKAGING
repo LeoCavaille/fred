@@ -1,0 +1,77 @@
+
+*
+(root)
+echo "deb http://perso.crans.org/dandrimont/fedmsg-wheezy/ ./" > /etc/apt/sources.list.d/fedmsg.list
+gpg --keyserver keyring.debian.org --recv-key B8E5087766475AAF
+gpg --export --armor B8E5087766475AAF| apt-key add  -
+apt-get install python-fedmsg devscripts
+
+edit /etc/fedmsg.d/endpoints.py
+    "debian": [
+        "tcp://fedmsg.olasd.eu:3000",
+    ],
+
+
+/etc/fedmsg.d/ssl.py
+    validate_signatures=False,
+
+To test
+fedmsg-tail --really-pretty
+and wait for a new message
+
+
+
+(root)
+* Create a dedicated user in the machine. This user will run the various services.
+    adduser --disabled-password --disabled-login --gecos "Fred manager,,," --home /srv/fred fred
+
+(root)
+* Create the database
+    su - postgres
+    createuser -W  --no-superuser   --no-createrole  --no-createdb fred
+    Enter: adamnverygoodpassword
+    createdb -O fred fred
+
+(fred)
+* Generate a new auto GPG key
+    gpg --gen-key (without passphrase)
+
+(fred)
+* git clone https://github.com/LeoCavaille/fred.git
+
+  mkvirtualenv fred && workon fred
+  cd fred && python setup.py develop
+
+EDIT fred/daemon.py
+engine = create_engine('postgresql://fred:adamnverygoodpassword@localhost/fred', echo=True)
+
+fred-init
+
+(root)
+* cp ~fred/fred/config_fred.py /etc/fedmsg.d/fred.py
+pip install sqlalchemy
+pip install python-debian
+pip install chardet
+pip install schroot
+
+# Need fedmsg debian package.. so not
+pip install kitchen
+pip install paver
+pip install fedmsg
+pip install  psycopg2
+
+cd ~ && git clone https://github.com/LeoCavaille/ricky.git
+cd ricky && python setup.py develop
+
+cd ~ && git clone https://github.com/LeoCavaille/ethel.git
+cd ethel && python setup.py develop
+
+(lucy)
+* In the lucy database,
+INSERT INTO users (login, name, gpg_fingerprint) VALUES ('leo', 'Leo Cavaille', 'B11A9FEC01B2B1F6C1C31DD4896AE222CC16515C');
+INSERT INTO users (login, name, gpg_fingerprint) VALUES ('fred', 'Fred the autobuilder', '<the GPG key>');
+
+
+fred-init
+fredd
+# Look for 'enabled by config  - fred.lurker:ArchiveLurker'
