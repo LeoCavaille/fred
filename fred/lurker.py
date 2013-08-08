@@ -10,7 +10,7 @@ import fedmsg.consumers
 import datetime as dt
 
 class ArchiveLurker(fedmsg.consumers.FedmsgConsumer):
-    topic = 'org.debian.dev.debmessenger.changes.*'
+    topic = 'org.debian.dev.debmessenger.package.upload'
     config_key = 'fred'
 
     def __init__(self, *args, **kwargs):
