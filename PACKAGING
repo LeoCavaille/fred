@@ -24,6 +24,8 @@ and wait for a new message
 (root)
 * Create a dedicated user in the machine. This user will run the various services.
     adduser --disabled-password --disabled-login --gecos "Fred manager,,," --home /srv/fred fred
+    usermod -a -G lucy fred
+    chmod g+w /srv/local-mirror/incoming/
 
 (root)
 * Create the database
