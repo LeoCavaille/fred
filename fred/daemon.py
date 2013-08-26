@@ -20,7 +20,7 @@ from fedmsg.commands.hub import hub
 #conf = Config()
 
 # TODO CONFIG
-MIRROR = 'debian.via.ecp.fr'
+MIRROR = 'ftp.fr.debian.org'
 
 # TODO CONFIG
 engine = create_engine('sqlite:///buildbuffer.db', echo=True)
@@ -40,7 +40,7 @@ def main_loop():
                         source=c.name,
                         version=c.version,
                         dist=c.suite,
-                        **{"X-Lucy-Group": "auto-rebuild"}
+                        **{"X-Debile-Group": "auto-rebuild"}
                     )
                     logging.info("Uploaded %s", c.nameversion)
                     session.delete(c)
